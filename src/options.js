@@ -263,7 +263,10 @@ function Page() {
         </div>
       </Content>
       <Footer style={{ textAlign: "center" }}>
-        Ant Design ©{new Date().getFullYear()} <a>Created by zzh</a>
+        Ant Design ©{new Date().getFullYear()}{" "}
+        <a href="https://github.com/z-9527/proxy-url/tree/main" target="_blank">
+          Created by zzh
+        </a>
       </Footer>
     </Layout>
   );

@@ -260,7 +260,10 @@ function Page() {
     style: {
       textAlign: "center"
     }
-  }, "Ant Design \xA9", new Date().getFullYear(), " ", /*#__PURE__*/React.createElement("a", null, "Created by zzh")));
+  }, "Ant Design \xA9", new Date().getFullYear(), " ", /*#__PURE__*/React.createElement("a", {
+    href: "https://github.com/z-9527/proxy-url/tree/main",
+    target: "_blank"
+  }, "Created by zzh")));
 }
 
 ReactDOM.render( /*#__PURE__*/React.createElement(Page, null), document.getElementById("root"));
