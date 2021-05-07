@@ -13,19 +13,9 @@ const {
   onStorageChange,
   getStorageSyncData
 } = Storage;
-const originData = [];
-
-for (let i = 0; i < 13; i++) {
-  originData.push({
-    key: i.toString(),
-    name: `测试测试${i + 1}`,
-    original: "www.baidu.com",
-    replace: "www.test.com"
-  });
-}
 
 function Popup() {
-  const [data, setData] = useState(originData);
+  const [data, setData] = useState();
   useEffect(() => {
     getStorageSyncData("proxyUrlList").then(res => {
       setData(res.proxyUrlList || []);
@@ -34,12 +24,36 @@ function Popup() {
       setData(res.newValue || []);
     });
   }, []);
+
+  const onEnableChange = (record, event) => {
+    const enable = event.target.checked;
+    const newData = [...data];
+    const index = newData.findIndex(item => record.key === item.key);
+    newData[index].enable = enable;
+    setStorageSyncData({
+      proxyUrlList: newData
+    });
+  };
+
+  const onAllChange = enable => {
+    let newData = [...data];
+    newData = newData.map(item => ({ ...item,
+      enable
+    }));
+    setStorageSyncData({
+      proxyUrlList: newData
+    });
+  };
+
   const columns = [{
     title: "启用",
     dataIndex: "enable",
     width: 70,
     align: "center",
-    render: v => /*#__PURE__*/React.createElement(Checkbox, null)
+    render: (v, record) => /*#__PURE__*/React.createElement(Checkbox, {
+      checked: v,
+      onChange: e => onEnableChange(record, e)
+    })
   }, {
     title: "名称",
     dataIndex: "name",
@@ -56,7 +70,8 @@ function Popup() {
     target: "_blank"
   }, "\u6DFB\u52A0\u89C4\u5219"), /*#__PURE__*/React.createElement(Switch, {
     checkedChildren: "\u5168\u90E8\u542F\u7528",
-    unCheckedChildren: "\u5168\u90E8\u5173\u95ED"
+    unCheckedChildren: "\u5168\u90E8\u5173\u95ED",
+    onChange: onAllChange
   }), /*#__PURE__*/React.createElement(Table, {
     columns: columns,
     dataSource: data,

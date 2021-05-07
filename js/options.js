@@ -10,7 +10,8 @@ const {
   Menu,
   Dropdown,
   Form,
-  Input
+  Input,
+  Checkbox
 } = antd;
 const {
   Header,
@@ -61,12 +62,24 @@ function Page() {
     onStorageChange("proxyUrlList", function (res) {
       setData(res.newValue || []);
     });
-  }, []); //添加规则
+  }, []);
+
+  const onEnableChange = (record, event) => {
+    const enable = event.target.checked;
+    const newData = [...data];
+    const index = newData.findIndex(item => record.key === item.key);
+    newData[index].enable = enable;
+    setStorageSyncData({
+      proxyUrlList: newData
+    });
+  }; //添加规则
+
 
   const onAdd = () => {
     onCancel();
     const newData = [...data];
     const record = {
+      enable: true,
       key: Date.now(),
       name: "",
       original: "",
@@ -82,6 +95,7 @@ function Page() {
 
   const onEdit = record => {
     form.setFieldsValue({
+      enable: false,
       name: "",
       original: "",
       replace: "",
@@ -167,7 +181,11 @@ function Page() {
   const columns = [{
     title: "启用",
     dataIndex: "enable",
-    width: 150
+    width: 150,
+    render: (v, record) => /*#__PURE__*/React.createElement(Checkbox, {
+      checked: v,
+      onChange: e => onEnableChange(record, e)
+    })
   }, {
     title: "名称",
     dataIndex: "name",

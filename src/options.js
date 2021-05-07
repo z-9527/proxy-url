@@ -1,5 +1,15 @@
 const { useState, useEffect } = React;
-const { Layout, Table, Button, Divider, Menu, Dropdown, Form, Input } = antd;
+const {
+  Layout,
+  Table,
+  Button,
+  Divider,
+  Menu,
+  Dropdown,
+  Form,
+  Input,
+  Checkbox,
+} = antd;
 const { Header, Content, Footer } = Layout;
 const { setStorageSyncData, onStorageChange, getStorageSyncData } = Storage;
 
@@ -53,11 +63,25 @@ function Page() {
     });
   }, []);
 
+  const onEnableChange = (record, event) => {
+    const enable = event.target.checked;
+    const newData = [...data];
+    const index = newData.findIndex((item) => record.key === item.key);
+    newData[index].enable = enable;
+    setStorageSyncData({ proxyUrlList: newData });
+  };
+
   //添加规则
   const onAdd = () => {
     onCancel();
     const newData = [...data];
-    const record = { key: Date.now(), name: "", original: "", replace: "" };
+    const record = {
+      enable: true,
+      key: Date.now(),
+      name: "",
+      original: "",
+      replace: "",
+    };
     newData.unshift(record);
     onEdit(record);
     setStorageSyncData({ proxyUrlList: newData });
@@ -66,6 +90,7 @@ function Page() {
   // 编辑
   const onEdit = (record) => {
     form.setFieldsValue({
+      enable: false,
       name: "",
       original: "",
       replace: "",
@@ -137,6 +162,9 @@ function Page() {
       title: "启用",
       dataIndex: "enable",
       width: 150,
+      render: (v, record) => (
+        <Checkbox checked={v} onChange={(e) => onEnableChange(record, e)} />
+      ),
     },
     {
       title: "名称",
@@ -243,7 +271,7 @@ function Page() {
           <Button type="primary" style={{ marginBottom: 12 }} onClick={onAdd}>
             添加规则
           </Button>
-          
+
           <Form form={form} component={false}>
             <Table
               columns={mergedColumns}
