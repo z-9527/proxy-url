@@ -1,9 +1,18 @@
 const {
+  useState,
+  useEffect
+} = React;
+const {
   Table,
   Button,
   Switch,
   Checkbox
 } = antd;
+const {
+  setStorageSyncData,
+  onStorageChange,
+  getStorageSyncData
+} = Storage;
 const originData = [];
 
 for (let i = 0; i < 13; i++) {
@@ -16,15 +25,20 @@ for (let i = 0; i < 13; i++) {
 }
 
 function Popup() {
-  const {
-    useState
-  } = React;
   const [data, setData] = useState(originData);
+  useEffect(() => {
+    getStorageSyncData("proxyUrlList").then(res => {
+      setData(res.proxyUrlList || []);
+    });
+    onStorageChange("proxyUrlList", function (res) {
+      setData(res.newValue || []);
+    });
+  }, []);
   const columns = [{
     title: "启用",
     dataIndex: "enable",
     width: 70,
-    align: 'center',
+    align: "center",
     render: v => /*#__PURE__*/React.createElement(Checkbox, null)
   }, {
     title: "名称",

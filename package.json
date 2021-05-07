@@ -5,7 +5,7 @@
   "main": "background.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "trans": "babel --watch src --out-dir js --presets @babel/preset-react"
+    "dev": "babel --watch src --out-dir js --presets @babel/preset-react"
   },
   "author": "",
   "license": "ISC",

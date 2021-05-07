@@ -2,6 +2,7 @@
   width: 400px;
   padding: 18px 24px;
 }
-.ant-table.ant-table-small th,.ant-table.ant-table-small .ant-table-row td{
+.ant-table.ant-table-small th,
+.ant-table.ant-table-small .ant-table-row td {
   padding: 8px 16px !important;
 }

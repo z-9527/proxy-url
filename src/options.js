@@ -1,17 +1,7 @@
-const { useState } = React;
+const { useState, useEffect } = React;
 const { Layout, Table, Button, Divider, Menu, Dropdown, Form, Input } = antd;
 const { Header, Content, Footer } = Layout;
-
-const originData = [];
-
-for (let i = 0; i < 3; i++) {
-  originData.push({
-    key: i.toString(),
-    name: `测试测试${i + 1}`,
-    original: "www.baidu.com",
-    replace: "www.test.com",
-  });
-}
+const { setStorageSyncData, onStorageChange, getStorageSyncData } = Storage;
 
 const EditableCell = ({
   editing,
@@ -31,12 +21,12 @@ const EditableCell = ({
           style={{
             margin: 0,
           }}
-          rules={[
-            {
-              required: true,
-              message: `请输入 ${title}!`,
-            },
-          ]}
+          // rules={[
+          //   {
+          //     required: true,
+          //     message: `请输入 ${title}!`,
+          //   },
+          // ]}
         >
           <Input />
         </Form.Item>
@@ -50,9 +40,18 @@ const EditableCell = ({
 function Page() {
   const [form] = Form.useForm();
   const [editingKey, setEditingKey] = useState("");
-  const [data, setData] = useState(originData);
+  const [data, setData] = useState([]);
 
   const isEditing = (record) => record.key === editingKey;
+
+  useEffect(() => {
+    getStorageSyncData("proxyUrlList").then((res) => {
+      setData(res.proxyUrlList || []);
+    });
+    onStorageChange("proxyUrlList", function (res) {
+      setData(res.newValue || []);
+    });
+  }, []);
 
   //添加规则
   const onAdd = () => {
@@ -61,7 +60,7 @@ function Page() {
     const record = { key: Date.now(), name: "", original: "", replace: "" };
     newData.unshift(record);
     onEdit(record);
-    setData(newData);
+    setStorageSyncData({ proxyUrlList: newData });
   };
 
   // 编辑
@@ -93,7 +92,7 @@ function Page() {
       } else {
         newData.push(row);
       }
-      setData(newData);
+      setStorageSyncData({ proxyUrlList: newData });
       onCancel();
     } catch (errInfo) {
       console.log("Validate Failed:", errInfo);
@@ -109,7 +108,7 @@ function Page() {
       key: Date.now(),
       name: `${record.name}-副本`,
     });
-    setData(newData);
+    setStorageSyncData({ proxyUrlList: newData });
   };
 
   // 移动
@@ -119,7 +118,7 @@ function Page() {
     let newIndex = index + 1 * (direction === "up" ? -1 : 1);
     newIndex = Math.min(Math.max(newIndex, 0), newData.length - 1);
     [newData[index], newData[newIndex]] = [newData[newIndex], newData[index]];
-    setData(newData);
+    setStorageSyncData({ proxyUrlList: newData });
   };
 
   // 删除
@@ -128,7 +127,7 @@ function Page() {
     const index = newData.findIndex((item) => key === item.key);
     if (index > -1) {
       newData.splice(index, 1);
-      setData(newData);
+      setStorageSyncData({ proxyUrlList: newData });
     }
     onCancel();
   };
@@ -244,6 +243,7 @@ function Page() {
           <Button type="primary" style={{ marginBottom: 12 }} onClick={onAdd}>
             添加规则
           </Button>
+          
           <Form form={form} component={false}>
             <Table
               columns={mergedColumns}
