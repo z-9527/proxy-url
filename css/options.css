@@ -1,0 +1,23 @@
+.site-layout-content {
+    min-height: 280px;
+    padding: 18px;
+    background: #fff;
+    height: calc(100vh - 134px);
+  }
+    .logo {
+    float: left;
+    width: 120px;
+    height: 31px;
+    margin: 16px 24px 16px 0;
+    background: rgba(255, 255, 255, 0.3);
+  }
+
+  .description{
+      color: #fff;
+  }
+
+  .editable-row .ant-form-item-explain {
+    position: absolute;
+    top: 100%;
+    font-size: 12px;
+  }
