@@ -1,6 +1,7 @@
 .container {
   width: 400px;
-  padding: 18px 24px;
+  padding: 12px;
+  height: 480px;
 }
 .ant-table.ant-table-small th,
 .ant-table.ant-table-small .ant-table-row td {

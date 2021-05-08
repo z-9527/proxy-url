@@ -19,6 +19,17 @@ function getDynamicRules() {
   });
 }
 
+function updateDynamicRules(options) {
+  return new Promise((resolve, reject) => {
+    chrome.declarativeNetRequest.updateDynamicRules(options, function (res) {
+      if (chrome.runtime.lastError) {
+        return reject(chrome.runtime.lastError);
+      }
+      resolve(res);
+    });
+  });
+}
+
 function handleData(arr) {
   if (!Array.isArray(arr)) {
     return;
@@ -53,12 +64,12 @@ chrome.runtime.onInstalled.addListener(async () => {
   onStorageChange("proxyUrlList", async function (res) {
     const oldRules = await getDynamicRules();
     const oldRulesId = oldRules.map((item) => item.id);
+    if (oldRulesId.length) {
+      await updateDynamicRules({ removeRuleIds: oldRulesId });
+    }
     const addRules = handleData(res.newValue);
-    console.log('addRules: ', addRules);
-
-    chrome.declarativeNetRequest.updateDynamicRules({
-      removeRuleIds: oldRulesId,
-      addRules,
-    });
+    if (addRules.length) {
+      await updateDynamicRules({ addRules });
+    }
   });
 });

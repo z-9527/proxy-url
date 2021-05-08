@@ -65,7 +65,7 @@ function Page() {
   const isEditing = (record) => record.key === editingKey;
 
   useEffect(() => {
-    getStorageSyncData("proxyUrlList").then((res) => {
+    getStorageSyncData().then((res) => {
       setData(res.proxyUrlList || []);
     });
     onStorageChange("proxyUrlList", function (res) {

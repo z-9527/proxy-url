@@ -1,6 +1,7 @@
 const {
   useState,
-  useEffect
+  useEffect,
+  useRef
 } = React;
 const {
   Table,
@@ -8,7 +9,12 @@ const {
   Switch,
   Checkbox,
   ConfigProvider,
-  locales
+  locales,
+  Tabs,
+  Radio,
+  Divider,
+  Input,
+  message
 } = antd;
 const {
   setStorageSyncData,
@@ -16,14 +22,23 @@ const {
   getStorageSyncData
 } = Storage;
 const {
-  SettingOutlined
+  getCurTabCookies,
+  setCookies
+} = Cookies;
+const {
+  SettingOutlined,
+  CopyOutlined,
+  ImportOutlined
 } = icons;
 
 function Popup() {
   const [data, setData] = useState();
+  const [activeKey, setActiveKey] = useState();
+  const textValue = useRef();
   useEffect(() => {
-    getStorageSyncData("proxyUrlList").then(res => {
+    getStorageSyncData().then(res => {
       setData(res.proxyUrlList || []);
+      setActiveKey(res.activeTabKey || "url");
     });
     onStorageChange("proxyUrlList", function (res) {
       setData(res.newValue || []);
@@ -64,10 +79,48 @@ function Popup() {
     dataIndex: "name",
     width: 200
   }];
+
+  const onTabChange = key => {
+    setActiveKey(key);
+    setStorageSyncData({
+      activeTabKey: key
+    });
+  };
+
+  const onCopy = async () => {
+    const res = await getCurTabCookies({});
+    copyToClip(JSON.stringify(res));
+    message.success("已复制到剪切板");
+  };
+
+  const onCopyLocalhost = async () => {
+    let res = await getCurTabCookies({});
+    res = res.map(item => ({ ...item,
+      domain: "localhost"
+    }));
+    copyToClip(JSON.stringify(res));
+    message.success("已复制到剪切板");
+  };
+
+  const onImport = async () => {
+    if (!textValue.current) {
+      return;
+    }
+
+    await setCookies(JSON.parse(textValue.current));
+    message.success("导入成功");
+  };
+
   return /*#__PURE__*/React.createElement(ConfigProvider, {
     locale: locales.zh_CN
   }, /*#__PURE__*/React.createElement("div", {
     className: "container"
+  }, /*#__PURE__*/React.createElement(Tabs, {
+    activeKey: activeKey,
+    onChange: onTabChange
+  }, /*#__PURE__*/React.createElement(Tabs.TabPane, {
+    tab: "\u4EE3\u7406url",
+    key: "url"
   }, /*#__PURE__*/React.createElement(Button, {
     type: "link",
     href: "options.html",
@@ -88,7 +141,36 @@ function Popup() {
     scroll: {
       y: 300
     }
-  })));
+  })), /*#__PURE__*/React.createElement(Tabs.TabPane, {
+    tab: "cookie",
+    key: "cookie"
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginBottom: 10
+    }
+  }, /*#__PURE__*/React.createElement(Button, {
+    size: "small",
+    onClick: onCopy
+  }, /*#__PURE__*/React.createElement(CopyOutlined, null), "\u590D\u5236"), /*#__PURE__*/React.createElement(Divider, {
+    type: "vertical"
+  }), /*#__PURE__*/React.createElement(Button, {
+    size: "small",
+    onClick: onCopyLocalhost
+  }, /*#__PURE__*/React.createElement(CopyOutlined, null), "\u590D\u5236\u5E76\u8F6Clocalhost"), /*#__PURE__*/React.createElement(Divider, {
+    type: "vertical"
+  })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(Input.TextArea, {
+    rows: 14,
+    onChange: e => textValue.current = e.target.value
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: "right",
+      marginTop: 8
+    }
+  }, /*#__PURE__*/React.createElement(Button, {
+    size: "small",
+    type: "primary",
+    onClick: onImport
+  }, /*#__PURE__*/React.createElement(ImportOutlined, null), "\u5BFC\u5165")))))));
 }
 
 ReactDOM.render( /*#__PURE__*/React.createElement(Popup, null), document.getElementById("root"));
