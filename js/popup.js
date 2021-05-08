@@ -6,7 +6,9 @@ const {
   Table,
   Button,
   Switch,
-  Checkbox
+  Checkbox,
+  ConfigProvider,
+  locales
 } = antd;
 const {
   setStorageSyncData,
@@ -59,7 +61,9 @@ function Popup() {
     dataIndex: "name",
     width: 200
   }];
-  return /*#__PURE__*/React.createElement("div", {
+  return /*#__PURE__*/React.createElement(ConfigProvider, {
+    locale: locales.zh_CN
+  }, /*#__PURE__*/React.createElement("div", {
     className: "container"
   }, /*#__PURE__*/React.createElement(Button, {
     type: "link",
@@ -81,7 +85,7 @@ function Popup() {
     scroll: {
       y: 300
     }
-  }));
+  })));
 }
 
 ReactDOM.render( /*#__PURE__*/React.createElement(Popup, null), document.getElementById("root"));

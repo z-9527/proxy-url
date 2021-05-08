@@ -3,6 +3,7 @@ const {
   useEffect
 } = React;
 const {
+  ConfigProvider,
   Layout,
   Table,
   Button,
@@ -11,7 +12,9 @@ const {
   Dropdown,
   Form,
   Input,
-  Checkbox
+  Checkbox,
+  Modal,
+  locales
 } = antd;
 const {
   Header,
@@ -176,6 +179,20 @@ function Page() {
     }
 
     onCancel();
+  }; // 删除全部规则
+
+
+  const onDeleteAll = () => {
+    Modal.confirm({
+      title: "提示",
+      content: "是否删除全部代理url配置？",
+      onOk: () => {
+        setStorageSyncData({
+          proxyUrlList: []
+        });
+        onCancel();
+      }
+    });
   };
 
   const columns = [{
@@ -254,7 +271,9 @@ function Page() {
       })
     };
   });
-  return /*#__PURE__*/React.createElement(Layout, {
+  return /*#__PURE__*/React.createElement(ConfigProvider, {
+    locale: locales.zh_CN
+  }, /*#__PURE__*/React.createElement(Layout, {
     className: "layout"
   }, /*#__PURE__*/React.createElement(Header, null, /*#__PURE__*/React.createElement("div", {
     className: "logo"
@@ -269,10 +288,16 @@ function Page() {
   }, /*#__PURE__*/React.createElement(Button, {
     type: "primary",
     style: {
-      marginBottom: 12
+      marginBottom: 12,
+      marginRight: 8
     },
     onClick: onAdd
-  }, "\u6DFB\u52A0\u89C4\u5219"), /*#__PURE__*/React.createElement(Form, {
+  }, "\u6DFB\u52A0\u89C4\u5219"), /*#__PURE__*/React.createElement(Button, {
+    style: {
+      marginBottom: 12
+    },
+    onClick: onDeleteAll
+  }, "\u5220\u9664\u5168\u90E8\u89C4\u5219"), /*#__PURE__*/React.createElement(Form, {
     form: form,
     component: false
   }, /*#__PURE__*/React.createElement(Table, {
@@ -297,7 +322,7 @@ function Page() {
   }, "Ant Design \xA9", new Date().getFullYear(), " ", /*#__PURE__*/React.createElement("a", {
     href: "https://github.com/z-9527/proxy-url/tree/main",
     target: "_blank"
-  }, "Created by zzh")));
+  }, "Created by zzh"))));
 }
 
 ReactDOM.render( /*#__PURE__*/React.createElement(Page, null), document.getElementById("root"));

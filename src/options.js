@@ -1,5 +1,6 @@
 const { useState, useEffect } = React;
 const {
+  ConfigProvider,
   Layout,
   Table,
   Button,
@@ -9,6 +10,8 @@ const {
   Form,
   Input,
   Checkbox,
+  Modal,
+  locales
 } = antd;
 const { Header, Content, Footer } = Layout;
 const { setStorageSyncData, onStorageChange, getStorageSyncData } = Storage;
@@ -157,6 +160,18 @@ function Page() {
     onCancel();
   };
 
+  // 删除全部规则
+  const onDeleteAll = () => {
+    Modal.confirm({
+      title: "提示",
+      content: "是否删除全部代理url配置？",
+      onOk: () => {
+        setStorageSyncData({ proxyUrlList: [] });
+        onCancel();
+      },
+    });
+  };
+
   const columns = [
     {
       title: "启用",
@@ -261,42 +276,54 @@ function Page() {
   });
 
   return (
-    <Layout className="layout">
-      <Header>
-        <div className="logo" />
-        <div className="description">代理url请求</div>
-      </Header>
-      <Content style={{ padding: "0 50px" }}>
-        <div className="site-layout-content">
-          <Button type="primary" style={{ marginBottom: 12 }} onClick={onAdd}>
-            添加规则
-          </Button>
+    <ConfigProvider locale={locales.zh_CN}>
+      <Layout className="layout">
+        <Header>
+          <div className="logo" />
+          <div className="description">代理url请求</div>
+        </Header>
+        <Content style={{ padding: "0 50px" }}>
+          <div className="site-layout-content">
+            <Button
+              type="primary"
+              style={{ marginBottom: 12, marginRight: 8 }}
+              onClick={onAdd}
+            >
+              添加规则
+            </Button>
+            <Button style={{ marginBottom: 12 }} onClick={onDeleteAll}>
+              删除全部规则
+            </Button>
 
-          <Form form={form} component={false}>
-            <Table
-              columns={mergedColumns}
-              dataSource={data}
-              rowClassName="editable-row"
-              bordered
-              components={{
-                body: {
-                  cell: EditableCell,
-                },
-              }}
-              pagination={false}
-              size="small"
-              scroll={{ y: window.innerHeight - 250 }}
-            />
-          </Form>
-        </div>
-      </Content>
-      <Footer style={{ textAlign: "center" }}>
-        Ant Design ©{new Date().getFullYear()}{" "}
-        <a href="https://github.com/z-9527/proxy-url/tree/main" target="_blank">
-          Created by zzh
-        </a>
-      </Footer>
-    </Layout>
+            <Form form={form} component={false}>
+              <Table
+                columns={mergedColumns}
+                dataSource={data}
+                rowClassName="editable-row"
+                bordered
+                components={{
+                  body: {
+                    cell: EditableCell,
+                  },
+                }}
+                pagination={false}
+                size="small"
+                scroll={{ y: window.innerHeight - 250 }}
+              />
+            </Form>
+          </div>
+        </Content>
+        <Footer style={{ textAlign: "center" }}>
+          Ant Design ©{new Date().getFullYear()}{" "}
+          <a
+            href="https://github.com/z-9527/proxy-url/tree/main"
+            target="_blank"
+          >
+            Created by zzh
+          </a>
+        </Footer>
+      </Layout>
+    </ConfigProvider>
   );
 }
 

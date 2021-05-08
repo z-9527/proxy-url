@@ -1,5 +1,5 @@
 const { useState, useEffect } = React;
-const { Table, Button, Switch, Checkbox } = antd;
+const { Table, Button, Switch, Checkbox, ConfigProvider, locales } = antd;
 const { setStorageSyncData, onStorageChange, getStorageSyncData } = Storage;
 
 function Popup() {
@@ -45,29 +45,31 @@ function Popup() {
     },
   ];
   return (
-    <div className="container">
-      <Button
-        type="link"
-        href="options.html"
-        style={{ marginBottom: 12 }}
-        target="_blank"
-      >
-        添加规则
-      </Button>
-      <Switch
-        checkedChildren="全部启用"
-        unCheckedChildren="全部关闭"
-        onChange={onAllChange}
-      />
-      <Table
-        columns={columns}
-        dataSource={data}
-        bordered
-        pagination={false}
-        size="small"
-        scroll={{ y: 300 }}
-      />
-    </div>
+    <ConfigProvider locale={locales.zh_CN}>
+      <div className="container">
+        <Button
+          type="link"
+          href="options.html"
+          style={{ marginBottom: 12 }}
+          target="_blank"
+        >
+          添加规则
+        </Button>
+        <Switch
+          checkedChildren="全部启用"
+          unCheckedChildren="全部关闭"
+          onChange={onAllChange}
+        />
+        <Table
+          columns={columns}
+          dataSource={data}
+          bordered
+          pagination={false}
+          size="small"
+          scroll={{ y: 300 }}
+        />
+      </div>
+    </ConfigProvider>
   );
 }
 
