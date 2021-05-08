@@ -5,7 +5,7 @@
 
 ### 前言
 网上有很多关于谷歌插件开发的教程，不过很多都是教程都比较老，我自己对网上的一些教程并结合官方的最新文档开发了此插件。 
-这里不记录API的使用，因为API以后可能会变化，这里只记录大概的开发原理和遇到的问题。具体的api使用参考官方文档  
+这里不记录API的使用，因为API以后可能会变化，这里只记录大概的开发原理和遇到的问题。具体的api使用参考官方文档，另外官网文档对V2到V3版本的变动也进行了补充，可以了解一下  
 官网文档：https://developer.chrome.com/docs/extensions/mv3/getstarted/
 
 
@@ -39,5 +39,7 @@ popup.html
 `background.js`是编写插件逻辑的文件，在这里我们可以拿到上面交互页面里的一些值，并在这里统一进行处理，比如网络请求的阻止和拦截操作。一些声明周期的监听事件等。
 而`manifest.json`这个声明文件，就是告诉谷歌浏览器哪些是弹出框文件、后台页面和插件逻辑文件，当然还有一些如icon配置、权限配置等，具体配置可以参考谷歌插件官网。
 
-此插件是使用`react+antd`开发。通过`babel`命令将jsx代码转换为普通js代码。命令行写在了`package.json`的`scripts`。babel监听src文件并将转化代码输出到js文件中。这里要注意presets使用的是`@babel/preset-react`而不是`react-app/prod `，因为`react-app/prod`不支持一些es7属性，导致babel在转换时会导入一些``Polyfill``来将ES7转ES5。而script标签里是不支持import等导入方式的(type/module可以但是Polyfill没有打包)，并且我们的`Polyfill`还是在`node_modules`里并没有打包。
-
+此插件是使用`react+antd`开发。通过`babel`命令将jsx代码转换为普通js代码。命令行写在了`package.json`的`scripts`。babel监听src文件并将转化代码输出到js文件中。这里要注意presets使用的是`@babel/preset-react`而不是`react-app/prod `，因为`react-app/prod`不支持一些es7属性，导致babel在转换时会导入一些``Polyfill``来将ES7转ES5。而script标签里是不支持import等导入方式的(type/module可以但是Polyfill没有打包)，并且我们的`Polyfill`还是在`node_modules`里并没有打包。  
+<br/>
+注意：在使用`Manifest V3`的`declarativeNetRequest`时，请求重定向和修改请求头需要主机权限，需要在`host_permissions`里配置主机。  
+`Manifest V3`版本的`background.js`没有办法直接引用其他js了
