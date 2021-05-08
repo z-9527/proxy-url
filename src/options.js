@@ -11,10 +11,17 @@ const {
   Input,
   Checkbox,
   Modal,
-  locales
+  locales,
 } = antd;
 const { Header, Content, Footer } = Layout;
 const { setStorageSyncData, onStorageChange, getStorageSyncData } = Storage;
+const {
+  DownOutlined,
+  VerticalAlignTopOutlined,
+  VerticalAlignBottomOutlined,
+  CopyOutlined,
+  DeleteOutlined
+} = icons;
 
 const EditableCell = ({
   editing,
@@ -229,29 +236,34 @@ function Page() {
                 <Menu>
                   <Menu.Item>
                     <Button type="link" onClick={() => onCopy(record)}>
-                      复制
+                      复制<CopyOutlined />
                     </Button>
                   </Menu.Item>
                   <Menu.Item>
                     <Button type="link" onClick={() => onMove(record, "up")}>
                       上移
+                      <VerticalAlignTopOutlined />
                     </Button>
                   </Menu.Item>
                   <Menu.Item>
                     <Button type="link" onClick={() => onMove(record, "down")}>
                       下移
+                      <VerticalAlignBottomOutlined />
                     </Button>
                   </Menu.Item>
                   <Menu.Item>
                     <Button type="link" onClick={() => onDelete(record)}>
-                      删除
+                      删除<DeleteOutlined />
                     </Button>
                   </Menu.Item>
                 </Menu>
               }
               disabled={editingKey !== ""}
             >
-              <Button type="link">更多</Button>
+              <Button type="link">
+                更多
+                <DownOutlined />
+              </Button>
             </Dropdown>
           </div>
         );

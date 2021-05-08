@@ -1,7 +1,7 @@
 const { useState, useEffect } = React;
 const { Table, Button, Switch, Checkbox, ConfigProvider, locales } = antd;
 const { setStorageSyncData, onStorageChange, getStorageSyncData } = Storage;
-
+const { SettingOutlined } = icons;
 function Popup() {
   const [data, setData] = useState();
 
@@ -53,6 +53,7 @@ function Popup() {
           style={{ marginBottom: 12 }}
           target="_blank"
         >
+          <SettingOutlined />
           添加规则
         </Button>
         <Switch

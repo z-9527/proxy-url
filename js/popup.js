@@ -15,6 +15,9 @@ const {
   onStorageChange,
   getStorageSyncData
 } = Storage;
+const {
+  SettingOutlined
+} = icons;
 
 function Popup() {
   const [data, setData] = useState();
@@ -72,7 +75,7 @@ function Popup() {
       marginBottom: 12
     },
     target: "_blank"
-  }, "\u6DFB\u52A0\u89C4\u5219"), /*#__PURE__*/React.createElement(Switch, {
+  }, /*#__PURE__*/React.createElement(SettingOutlined, null), "\u6DFB\u52A0\u89C4\u5219"), /*#__PURE__*/React.createElement(Switch, {
     checkedChildren: "\u5168\u90E8\u542F\u7528",
     unCheckedChildren: "\u5168\u90E8\u5173\u95ED",
     onChange: onAllChange

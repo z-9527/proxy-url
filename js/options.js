@@ -26,6 +26,13 @@ const {
   onStorageChange,
   getStorageSyncData
 } = Storage;
+const {
+  DownOutlined,
+  VerticalAlignTopOutlined,
+  VerticalAlignBottomOutlined,
+  CopyOutlined,
+  DeleteOutlined
+} = icons;
 
 const EditableCell = ({
   editing,
@@ -241,20 +248,20 @@ function Page() {
         overlay: /*#__PURE__*/React.createElement(Menu, null, /*#__PURE__*/React.createElement(Menu.Item, null, /*#__PURE__*/React.createElement(Button, {
           type: "link",
           onClick: () => onCopy(record)
-        }, "\u590D\u5236")), /*#__PURE__*/React.createElement(Menu.Item, null, /*#__PURE__*/React.createElement(Button, {
+        }, "\u590D\u5236", /*#__PURE__*/React.createElement(CopyOutlined, null))), /*#__PURE__*/React.createElement(Menu.Item, null, /*#__PURE__*/React.createElement(Button, {
           type: "link",
           onClick: () => onMove(record, "up")
-        }, "\u4E0A\u79FB")), /*#__PURE__*/React.createElement(Menu.Item, null, /*#__PURE__*/React.createElement(Button, {
+        }, "\u4E0A\u79FB", /*#__PURE__*/React.createElement(VerticalAlignTopOutlined, null))), /*#__PURE__*/React.createElement(Menu.Item, null, /*#__PURE__*/React.createElement(Button, {
           type: "link",
           onClick: () => onMove(record, "down")
-        }, "\u4E0B\u79FB")), /*#__PURE__*/React.createElement(Menu.Item, null, /*#__PURE__*/React.createElement(Button, {
+        }, "\u4E0B\u79FB", /*#__PURE__*/React.createElement(VerticalAlignBottomOutlined, null))), /*#__PURE__*/React.createElement(Menu.Item, null, /*#__PURE__*/React.createElement(Button, {
           type: "link",
           onClick: () => onDelete(record)
-        }, "\u5220\u9664"))),
+        }, "\u5220\u9664", /*#__PURE__*/React.createElement(DeleteOutlined, null)))),
         disabled: editingKey !== ""
       }, /*#__PURE__*/React.createElement(Button, {
         type: "link"
-      }, "\u66F4\u591A")));
+      }, "\u66F4\u591A", /*#__PURE__*/React.createElement(DownOutlined, null))));
     }
   }];
   const mergedColumns = columns.map(col => {

@@ -54,6 +54,7 @@ chrome.runtime.onInstalled.addListener(async () => {
     const oldRules = await getDynamicRules();
     const oldRulesId = oldRules.map((item) => item.id);
     const addRules = handleData(res.newValue);
+    console.log('addRules: ', addRules);
 
     chrome.declarativeNetRequest.updateDynamicRules({
       removeRuleIds: oldRulesId,
