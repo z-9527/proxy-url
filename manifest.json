@@ -21,5 +21,8 @@
       "48": "/images/bulb48.png"
     }
   },
+  "icons": {
+    "48": "/images/bulb48.png"
+  },
   "options_page": "options.html"
 }
