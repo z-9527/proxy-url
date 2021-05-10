@@ -1,6 +1,6 @@
 {
   "name": "proxy_url",
-  "description": "代理请求插件",
+  "description": "代理请求、cookie导入和转换插件",
   "version": "1.0",
   "manifest_version": 3,
   "background": {
@@ -16,7 +16,10 @@
   ],
   "host_permissions": ["*://*/*"],
   "action": {
-    "default_popup": "popup.html"
+    "default_popup": "popup.html",
+    "default_icon": {
+      "48": "/images/bulb48.png"
+    }
   },
   "options_page": "options.html"
 }
