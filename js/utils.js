@@ -75,8 +75,32 @@ const Cookies = (function (chrome) {
     });
   }
 
+  function pick(obj, arr) {
+    return arr.reduce((total, item) => {
+      total[item] = obj[item];
+      return total;
+    }, {});
+  }
+
   function setCookies(details) {
-    return Promise.all(details.map((item) => chrome.cookies.set(item)));
+    return Promise.allSettled(
+      details.map((item) => {
+        const detail = pick(item, [
+          "domain",
+          "expirationDate",
+          "httpOnly",
+          "name",
+          "path",
+          "sameSite",
+          "secure",
+          "storeId",
+          "value",
+        ]);
+        detail.url =
+          "http" + (item.secure ? "s" : "") + "://" + item.domain + item.path;
+        return chrome.cookies.set(detail);
+      })
+    );
   }
 
   function removeCookies(details) {
@@ -105,11 +129,23 @@ async function getCurrentTab() {
 }
 
 function copyToClip(content) {
-  var aux = document.createElement("input");
+  let aux = document.createElement("input");
   aux.setAttribute("value", content);
   aux.style.cssText = " position: fixed;top: -100%;";
   document.body.appendChild(aux);
   aux.select();
   document.execCommand("copy");
   document.body.removeChild(aux);
+}
+
+function getClipboard() {
+  let pasteTarget = document.createElement("div");
+  pasteTarget.contentEditable = true;
+  pasteTarget.style.cssText = " position: fixed;top: -100%;";
+  document.body.appendChild(pasteTarget);
+  pasteTarget.focus();
+  document.execCommand("Paste", null, null);
+  let paste = pasteTarget.innerText;
+  document.body.removeChild(pasteTarget);
+  return paste;
 }

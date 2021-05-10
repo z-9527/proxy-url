@@ -10,7 +10,9 @@
     "storage",
     "declarativeNetRequest",
     "declarativeNetRequestFeedback",
-    "cookies"
+    "cookies",
+    "clipboardRead",
+    "clipboardWrite"
   ],
   "host_permissions": ["*://*/*"],
   "action": {

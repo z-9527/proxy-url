@@ -102,13 +102,22 @@ function Popup() {
     message.success("已复制到剪切板");
   };
 
-  const onImport = async () => {
-    if (!textValue.current) {
+  const onImport = async text => {
+    if (!text) {
       return;
     }
 
-    await setCookies(JSON.parse(textValue.current));
-    message.success("导入成功");
+    try {
+      await setCookies(JSON.parse(text));
+      message.success("导入成功");
+    } catch (error) {
+      message.error("请导入正确的格式");
+    }
+  };
+
+  const onImportPlate = async () => {
+    const text = getClipboard();
+    onImport(text);
   };
 
   return /*#__PURE__*/React.createElement(ConfigProvider, {
@@ -158,7 +167,10 @@ function Popup() {
     onClick: onCopyLocalhost
   }, /*#__PURE__*/React.createElement(CopyOutlined, null), "\u590D\u5236\u5E76\u8F6Clocalhost"), /*#__PURE__*/React.createElement(Divider, {
     type: "vertical"
-  })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(Input.TextArea, {
+  }), /*#__PURE__*/React.createElement(Button, {
+    size: "small",
+    onClick: onImportPlate
+  }, /*#__PURE__*/React.createElement(ImportOutlined, null), "\u5BFC\u5165\u526A\u5207\u677F")), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(Input.TextArea, {
     rows: 14,
     onChange: e => textValue.current = e.target.value
   }), /*#__PURE__*/React.createElement("div", {
@@ -169,7 +181,7 @@ function Popup() {
   }, /*#__PURE__*/React.createElement(Button, {
     size: "small",
     type: "primary",
-    onClick: onImport
+    onClick: () => onImport(textValue.current)
   }, /*#__PURE__*/React.createElement(ImportOutlined, null), "\u5BFC\u5165")))))));
 }
 

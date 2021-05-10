@@ -79,12 +79,21 @@ function Popup() {
     message.success("已复制到剪切板");
   };
 
-  const onImport = async () => {
-    if (!textValue.current) {
+  const onImport = async (text) => {
+    if (!text) {
       return;
     }
-    await setCookies(JSON.parse(textValue.current));
-    message.success("导入成功");
+    try {
+      await setCookies(JSON.parse(text));
+      message.success("导入成功");
+    } catch (error) {
+      message.error("请导入正确的格式");
+    }
+  };
+
+  const onImportPlate = async () => {
+    const text = getClipboard();
+    onImport(text);
   };
 
   return (
@@ -127,6 +136,10 @@ function Popup() {
                 复制并转localhost
               </Button>
               <Divider type="vertical" />
+              <Button size="small" onClick={onImportPlate}>
+                <ImportOutlined />
+                导入剪切板
+              </Button>
             </div>
             <div>
               <Input.TextArea
@@ -134,7 +147,11 @@ function Popup() {
                 onChange={(e) => (textValue.current = e.target.value)}
               />
               <div style={{ textAlign: "right", marginTop: 8 }}>
-                <Button size="small" type="primary" onClick={onImport}>
+                <Button
+                  size="small"
+                  type="primary"
+                  onClick={() => onImport(textValue.current)}
+                >
                   <ImportOutlined />
                   导入
                 </Button>
