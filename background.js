@@ -60,16 +60,17 @@ function handleData(arr) {
   }, []);
 }
 
-chrome.runtime.onInstalled.addListener(async () => {
-  onStorageChange("proxyUrlList", async function (res) {
-    const oldRules = await getDynamicRules();
-    const oldRulesId = oldRules.map((item) => item.id);
-    if (oldRulesId.length) {
-      await updateDynamicRules({ removeRuleIds: oldRulesId });
-    }
-    const addRules = handleData(res.newValue);
-    if (addRules.length) {
-      await updateDynamicRules({ addRules });
-    }
-  });
-});
+// background里有时不触发storage change，所以没有将逻辑写到这里
+// chrome.runtime.onInstalled.addListener(async () => {
+//   onStorageChange("proxyUrlList", async function (res) {
+//     const oldRules = await getDynamicRules();
+//     const oldRulesId = oldRules.map((item) => item.id);
+//     if (oldRulesId.length) {
+//       await updateDynamicRules({ removeRuleIds: oldRulesId });
+//     }
+//     const addRules = handleData(res.newValue);
+//     if (addRules.length) {
+//       await updateDynamicRules({ addRules });
+//     }
+//   });
+// });

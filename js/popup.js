@@ -42,6 +42,7 @@ function Popup() {
     });
     onStorageChange("proxyUrlList", function (res) {
       setData(res.newValue || []);
+      Request.changeRules(res.newValue);
     });
   }, []);
 

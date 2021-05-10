@@ -122,6 +122,76 @@ const Cookies = (function (chrome) {
   };
 })(chrome);
 
+const Request = (function (chrome) {
+  function getDynamicRules() {
+    return new Promise((resolve, reject) => {
+      chrome.declarativeNetRequest.getDynamicRules(function (res) {
+        if (chrome.runtime.lastError) {
+          return reject(chrome.runtime.lastError);
+        }
+        resolve(res);
+      });
+    });
+  }
+
+  function updateDynamicRules(options) {
+    return new Promise((resolve, reject) => {
+      chrome.declarativeNetRequest.updateDynamicRules(options, function (res) {
+        if (chrome.runtime.lastError) {
+          return reject(chrome.runtime.lastError);
+        }
+        resolve(res);
+      });
+    });
+  }
+
+  function handleData(arr) {
+    if (!Array.isArray(arr)) {
+      return;
+    }
+    return arr.reduce((total, item, index) => {
+      if (item.enable) {
+        total.push({
+          id: index + 1,
+          priority: 1,
+          action: {
+            type: "redirect",
+            redirect: { regexSubstitution: item.replace },
+          },
+          condition: {
+            regexFilter: item.original,
+            resourceTypes: [
+              "main_frame",
+              "stylesheet",
+              "script",
+              "image",
+              "font",
+              "media",
+            ],
+          },
+        });
+      }
+      return total;
+    }, []);
+  }
+  async function changeRules(list) {
+    const oldRules = await getDynamicRules();
+    const oldRulesId = oldRules.map((item) => item.id);
+    if (oldRulesId.length) {
+      await updateDynamicRules({ removeRuleIds: oldRulesId });
+    }
+    const addRules = handleData(list);
+    if (addRules.length) {
+      await updateDynamicRules({ addRules });
+    }
+  }
+  return {
+    getDynamicRules,
+    updateDynamicRules,
+    changeRules
+  };
+})(chrome);
+
 async function getCurrentTab() {
   let queryOptions = { active: true, currentWindow: true };
   let [tab] = await chrome.tabs.query(queryOptions);

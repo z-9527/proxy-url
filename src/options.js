@@ -20,7 +20,7 @@ const {
   VerticalAlignTopOutlined,
   VerticalAlignBottomOutlined,
   CopyOutlined,
-  DeleteOutlined
+  DeleteOutlined,
 } = icons;
 
 const EditableCell = ({
@@ -70,6 +70,7 @@ function Page() {
     });
     onStorageChange("proxyUrlList", function (res) {
       setData(res.newValue || []);
+      Request.changeRules(res.newValue);
     });
   }, []);
 
@@ -236,7 +237,8 @@ function Page() {
                 <Menu>
                   <Menu.Item>
                     <Button type="link" onClick={() => onCopy(record)}>
-                      复制<CopyOutlined />
+                      复制
+                      <CopyOutlined />
                     </Button>
                   </Menu.Item>
                   <Menu.Item>
@@ -253,7 +255,8 @@ function Page() {
                   </Menu.Item>
                   <Menu.Item>
                     <Button type="link" onClick={() => onDelete(record)}>
-                      删除<DeleteOutlined />
+                      删除
+                      <DeleteOutlined />
                     </Button>
                   </Menu.Item>
                 </Menu>
