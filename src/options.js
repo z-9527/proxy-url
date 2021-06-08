@@ -184,7 +184,7 @@ function Page() {
     {
       title: "启用",
       dataIndex: "enable",
-      width: 150,
+      width: 100,
       render: (v, record) => (
         <Checkbox checked={v} onChange={(e) => onEnableChange(record, e)} />
       ),
@@ -214,11 +214,11 @@ function Page() {
         const editable = isEditing(record);
         return editable ? (
           <>
-            <Button type="link" onClick={() => onSave(record)}>
+            <Button type="link" onClick={() => onSave(record)} size='small'>
               保存
             </Button>
             <Divider type="vertical" />
-            <Button type="link" onClick={onCancel}>
+            <Button type="link" onClick={onCancel} size='small'>
               取消
             </Button>
           </>
@@ -228,19 +228,25 @@ function Page() {
               type="link"
               onClick={() => onEdit(record)}
               disabled={editingKey !== ""}
+              size='small'
             >
               编辑
             </Button>
             <Divider type="vertical" />
-            <Dropdown
+            <Button type="link" onClick={() => onCopy(record)} size='small'>
+              复制
+              {/* <CopyOutlined /> */}
+            </Button>
+            <Divider type="vertical" />
+            <Button type="link" onClick={() => onDelete(record)} size='small'>
+              删除
+              {/* <DeleteOutlined /> */}
+            </Button>
+
+            {/* <Dropdown
               overlay={
                 <Menu>
-                  <Menu.Item>
-                    <Button type="link" onClick={() => onCopy(record)}>
-                      复制
-                      <CopyOutlined />
-                    </Button>
-                  </Menu.Item>
+                  <Menu.Item></Menu.Item>
                   <Menu.Item>
                     <Button type="link" onClick={() => onMove(record, "up")}>
                       上移
@@ -253,12 +259,7 @@ function Page() {
                       <VerticalAlignBottomOutlined />
                     </Button>
                   </Menu.Item>
-                  <Menu.Item>
-                    <Button type="link" onClick={() => onDelete(record)}>
-                      删除
-                      <DeleteOutlined />
-                    </Button>
-                  </Menu.Item>
+                  <Menu.Item></Menu.Item>
                 </Menu>
               }
               disabled={editingKey !== ""}
@@ -267,7 +268,7 @@ function Page() {
                 更多
                 <DownOutlined />
               </Button>
-            </Dropdown>
+            </Dropdown> */}
           </div>
         );
       },

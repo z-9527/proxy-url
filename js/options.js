@@ -206,7 +206,7 @@ function Page() {
   const columns = [{
     title: "启用",
     dataIndex: "enable",
-    width: 150,
+    width: 100,
     render: (v, record) => /*#__PURE__*/React.createElement(Checkbox, {
       checked: v,
       onChange: e => onEnableChange(record, e)
@@ -233,36 +233,32 @@ function Page() {
       const editable = isEditing(record);
       return editable ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Button, {
         type: "link",
-        onClick: () => onSave(record)
+        onClick: () => onSave(record),
+        size: "small"
       }, "\u4FDD\u5B58"), /*#__PURE__*/React.createElement(Divider, {
         type: "vertical"
       }), /*#__PURE__*/React.createElement(Button, {
         type: "link",
-        onClick: onCancel
+        onClick: onCancel,
+        size: "small"
       }, "\u53D6\u6D88")) : /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(Button, {
         type: "link",
         onClick: () => onEdit(record),
-        disabled: editingKey !== ""
+        disabled: editingKey !== "",
+        size: "small"
       }, "\u7F16\u8F91"), /*#__PURE__*/React.createElement(Divider, {
         type: "vertical"
-      }), /*#__PURE__*/React.createElement(Dropdown, {
-        overlay: /*#__PURE__*/React.createElement(Menu, null, /*#__PURE__*/React.createElement(Menu.Item, null, /*#__PURE__*/React.createElement(Button, {
-          type: "link",
-          onClick: () => onCopy(record)
-        }, "\u590D\u5236", /*#__PURE__*/React.createElement(CopyOutlined, null))), /*#__PURE__*/React.createElement(Menu.Item, null, /*#__PURE__*/React.createElement(Button, {
-          type: "link",
-          onClick: () => onMove(record, "up")
-        }, "\u4E0A\u79FB", /*#__PURE__*/React.createElement(VerticalAlignTopOutlined, null))), /*#__PURE__*/React.createElement(Menu.Item, null, /*#__PURE__*/React.createElement(Button, {
-          type: "link",
-          onClick: () => onMove(record, "down")
-        }, "\u4E0B\u79FB", /*#__PURE__*/React.createElement(VerticalAlignBottomOutlined, null))), /*#__PURE__*/React.createElement(Menu.Item, null, /*#__PURE__*/React.createElement(Button, {
-          type: "link",
-          onClick: () => onDelete(record)
-        }, "\u5220\u9664", /*#__PURE__*/React.createElement(DeleteOutlined, null)))),
-        disabled: editingKey !== ""
-      }, /*#__PURE__*/React.createElement(Button, {
-        type: "link"
-      }, "\u66F4\u591A", /*#__PURE__*/React.createElement(DownOutlined, null))));
+      }), /*#__PURE__*/React.createElement(Button, {
+        type: "link",
+        onClick: () => onCopy(record),
+        size: "small"
+      }, "\u590D\u5236"), /*#__PURE__*/React.createElement(Divider, {
+        type: "vertical"
+      }), /*#__PURE__*/React.createElement(Button, {
+        type: "link",
+        onClick: () => onDelete(record),
+        size: "small"
+      }, "\u5220\u9664"));
     }
   }];
   const mergedColumns = columns.map(col => {
